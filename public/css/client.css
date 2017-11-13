@@ -1,0 +1,188 @@
+/* Default */
+body {
+    background: url(../data/furley_bg.png) center;
+}
+.clear {
+    clear: both;
+}
+span.notnull {
+    color: red;
+    margin-left: 5px;
+}
+/* Style Error */
+label.error {
+    color: red;
+    margin-left: 5px;
+    margin-top: 3px;
+    font-size: 0.9em;
+    display: block;
+}
+input.error {
+    border-color: red;
+}
+header {
+    min-height: 150px;
+    margin-bottom: 2px;
+}
+nav {
+    min-height: 50px;
+    margin-bottom: 2px;
+}
+article {
+    min-height: 500px;
+    width: 75%;
+    margin-bottom: 2px;
+    float: left;
+    padding: 0px 10px 10px 5px;
+}
+aside {
+    width: 25%;
+    float: right;
+    border: 1px solid;
+    margin-bottom: 2px;
+    min-height: 500px;
+    overflow: hidden;
+    padding: 5px 10px;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+}
+footer {
+    clear: both;
+}
+/* header */
+header #div-logo img {
+    max-width: 12%;
+    float: left;
+    margin-right: 1%;
+}
+header #div-solo {
+    float: left;
+    max-width: 87%;
+}
+header #div-language {
+    position: absolute;
+    right: 10px;
+}
+header #div-language img {
+    width: 50px;
+}
+header #div-language ul li a img {
+    max-width: 21px;
+    float: right;
+}
+div#div-solo h1 {
+    color: red;
+    font-weight: 600;
+    text-shadow: 3px 2px 1px grey;
+}
+div#div-solo p {
+    font-weight: 600;
+    color: gray;
+    font-style: italic;
+}
+/* Menu */
+.affix {
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+.affix + .container-fluid {
+    padding-top: 70px;
+}
+#search-phone {
+    display: none;
+}
+div#user {
+    font-weight: 600;
+    font-size: 1.2em;
+}
+div#user>img {
+    width: 40px;
+    height: 34px;
+    margin: 8px 5px;
+    border: 1px solid gray;
+    border-radius: 2px;
+}
+.navbar-nav>.active>a {
+    cursor: no-drop;
+}
+/* Footer */
+footer>span {
+    display: block;
+    border-bottom: 2px solid lightgray;
+    padding: 10px 10px 0px 10px;
+    font-style: italic;
+    font-weight: 600;
+    color: gray;
+}
+.footer-sub {
+    width: 30%;
+    overflow: hidden;
+    padding: 20px 0px 5px 5%;
+    float: left;
+}
+.footer-sub>label {
+    display: block;
+}
+.footer-sub>form>span {
+    font-weight: 600;
+    font-style: italic;
+    color: gray;
+}
+/* aside */
+/* Aside hot post */
+.div-hotpost {
+    max-height: 380px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.div-hotpost>ul {
+    padding: 0px;
+}
+.div-hotpost>ul>li {
+    list-style: none;
+    clear: both;
+    display: inline-block;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+.itempost {
+    width: 50px;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    float: left;
+    margin-right: 10px;
+}
+.div-hotpost>label {
+    display: block;
+    border-bottom: 1px dashed lightgray;
+    font-size: 1.5em;
+}
+.itempost>span {
+    text-align: center;
+    display: block;
+}
+aside a:hover {
+    text-decoration: none;
+}
+.itempost>span:last-child {
+    font-size: 0.8em;
+    background-color: cadetblue;
+    color: white;
+    font-weight: 600;
+}
+.itempost>span:first-child {
+    font-weight: 600;
+    font-size: 1.2em;
+    color: coral;
+    font-style: italic;
+}
+/* Aside img */
+div#div-image {
+    margin-bottom: 10px;
+}
+div#div-image>img {
+    width: 100%;
+    margin-bottom: 5px;
+}
+/* Aside video */
