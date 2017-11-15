@@ -1,4 +1,5 @@
 let Db = require("../../models/database.js");
+let moment = require("moment");
 
 module.exports = (app, pool) => {
 	app.get("/error", (req, res, next) => {
@@ -6,7 +7,8 @@ module.exports = (app, pool) => {
 	});
 
 	app.get("/service", (req, res, next) => {
-		res.render("service/home", {data: "Da chay server, đây là client"});
+		let date = moment(new Date());
+		res.render("service/home", {data: "Da chay server, đây là client " + date.add(1, "M").format("YYYY/MM/DD HH:mm:ss")});
 	});
 
 	app.get("/service/email", (req, res, next) => {
@@ -54,6 +56,8 @@ module.exports = (app, pool) => {
 		let obj = {}
 		let strState = "0"
 		let admin = "lokit007"
+		let date = moment(new Date());
+		
 		try {
 			strState = req.query.state;
 			admin = req.query.user;
@@ -63,7 +67,7 @@ module.exports = (app, pool) => {
 				obj = {
 					MacKey: req.params.key,
 					State: strState,
-					DateBlock: "2017/12/13"
+					DateBlock: date.add(1, "M").format("YYYY/MM/DD")
 				};
 				pool.getConnection(function(err, connection) {
 					connection.beginTransaction(function(errTran) {
