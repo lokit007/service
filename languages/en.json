@@ -1,1 +1,8 @@
-{}
+{
+	"title-page": "Tittle page here",
+	"decscription-page": "Decscription page here",
+	"vi": "Vietnamese",
+	"en": "English",
+	"menu-signup": "menu-signup",
+	"menu-login": "menu-login"
+}

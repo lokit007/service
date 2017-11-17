@@ -7,18 +7,31 @@ html(lang="#{ clanguage }")
         title= title || "Admin NhanViet Webservice"
         link(href="css/bootstrap.min.css", rel="stylesheet")
         link(href="css/admin.css", rel="stylesheet")
+        link(href="font-awesome/css/font-awesome.min.css", rel="stylesheet")
         script(src="js/jquery-3.1.1.min.js")
         script(src="js/jquery.validate.min.js")
         script(src="js/bootstrap.min.js")
         script(src="js/eModal.min.js")
         script(src="js/admin.js")
+        script(src="ckeditor/ckeditor.js")
         //- Thu vien them vao header
         block addcss
         block addjs
     body
         block addheader
             #div-header
-                h1 Gom logo, menu, quang ba, ...
+                #div-logo: img(src="images/logo.png")
+                #div-solo
+                    h1 #{ __("title-page") }
+                    p !{ __("decscription-page") }
+                #div-language.btn-group
+                    img(src="images/icons/#{ clanguage }.png", data-toggle="dropdown")
+                    ul(class="dropdown-menu dropdown-menu-right", role="menu")
+                        for lg in languages
+                            li: a(href="#{ page }?lang=#{ lg }") #{ __(lg) }
+                                img(src="images/icons/#{ lg }.png")
+                .div-clear
+                include menu
         #div-content
             #div-left
                 block addcontent
@@ -28,5 +41,10 @@ html(lang="#{ clanguage }")
                     h2 Cac thong tin cap nhat, link lien ket, quang cao, ...
             .div-clear
         block addfooter
-            h4 Phan cuoi cua trang web
+            #div-footer
+                .div-item
+                    h4 Footer heare
+                .div-item
+                    h4 Footer heare
+                .div-clear
 

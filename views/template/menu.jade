@@ -1,0 +1,23 @@
+#div-menu.container-fluid
+	.navbar-header
+		a(class="navbar-brand", href="#") NHANVIET
+		button(type="button", data-toggle="collapse", data-target="#navbar", aria-expanded="true", aria-controls="navbar").navbar-toggle
+			span.sr-only Toggle navigation
+			span.icon-bar
+			span.icon-bar
+			span.icon-bar
+	#navbar.navbar-collapse.collapse(aria-expanded="false")
+		ul.nav.navbar-nav
+			li(class="#{ active==1 ? 'active':'' }"): a(href="#")
+				i.fa.fa-shopping-basket
+				|  Cửa hàng
+			li(class="#{ active==2 ? 'active':'' }"):  a(href="#")
+				i.fa.fa-share-alt-square
+				|  Đăng bài
+		ul.nav.navbar-nav.navbar-right
+			li: a(href="/signup")
+				span.glyphicon.glyphicon-user
+				|  #{ __("menu-signup") }
+			li: a(href="/login")
+				span.glyphicon.glyphicon-log-in
+				|  #{ __("menu-login") }
