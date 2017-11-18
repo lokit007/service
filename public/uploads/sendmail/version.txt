@@ -1,0 +1,8 @@
+v1.00.000
+AppSendMailMakerting.exe
+AppSendMailMakerting.exe.config
+AppSendMailMakerting.pdb
+AppSendMailMakerting.vshost.exe
+AppSendMailMakerting.vshost.exe.config
+AppSendMailMakerting.vshost.exe.manifest
+AppSendMailMakerting.xml

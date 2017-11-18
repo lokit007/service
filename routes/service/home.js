@@ -1,5 +1,6 @@
 let Db = require("../../models/database.js");
 let moment = require("moment");
+let fs = require("fs");
 
 module.exports = (app, pool) => {
 	app.get("/error", (req, res, next) => {
@@ -67,7 +68,10 @@ module.exports = (app, pool) => {
 				obj = {
 					MacKey: req.params.key,
 					State: strState,
-					DateBlock: date.add(1, "M").format("YYYY/MM/DD")
+					DateBlock: date.add(1, "M").format("YYYY/MM/DD"),
+					NameUser: req.query.name,
+					Phone: req.query.phone,
+					Email: req.query.email
 				};
 				pool.getConnection(function(err, connection) {
 					connection.beginTransaction(function(errTran) {
@@ -94,6 +98,28 @@ module.exports = (app, pool) => {
 		} catch (error) {
 			console.log(error);
 			res.json({requets: false, keyvalue: "ErrorValue"});
+		}
+	});
+
+	app.get("/service/checkversion/:app", (req, res, next) => {
+		let app = req.params.app;
+		let ver = req.query.ver;
+		let lines = [];
+		try {
+			switch (app) {
+				case "sendmail":
+					lines = fs.readFileSync("./public/uploads/sendmail/version.txt").toString().split("\r\n");
+					if (lines[0] != ver) {
+						res.json({requets: true, files: lines})
+					} else {
+						res.json({requets: false, files: []});
+					}
+					break;
+				default :
+					res.json({requets: false, files: []});
+			}
+		} catch (error) {
+			res.json({requets: false, files: []});
 		}
 	});
 }
