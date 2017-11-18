@@ -105,10 +105,13 @@ module.exports = (app, pool) => {
 		let app = req.params.app;
 		let ver = req.query.ver;
 		let lines = [];
+		let strResult = ""
 		try {
 			switch (app) {
 				case "sendmail":
-					lines = fs.readFileSync("./public/uploads/sendmail/version.txt").toString().split("\r\n");
+					strResult = fs.readFileSync("./public/uploads/sendmail/version.txt", "utf-8");
+					console.log(strResult);
+					lines = strResult.split("\r\n");
 					if (lines[0] != ver) {
 						res.json({requets: true, files: lines})
 					} else {
