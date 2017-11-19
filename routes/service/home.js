@@ -105,13 +105,13 @@ module.exports = (app, pool) => {
 		let app = req.params.app;
 		let ver = req.query.ver;
 		let lines = [];
-		let strResult = ""
+		let strResult = "";
 		try {
 			switch (app) {
 				case "sendmail":
 					strResult = fs.readFileSync("./public/uploads/sendmail/version.txt", "utf-8");
 					console.log(strResult);
-					lines = strResult.split("\r\n");
+					lines = strResult.replace(/\r/gi, "").split("\n");
 					if (lines[0] != ver) {
 						res.json({requets: true, files: lines, data: strResult})
 					} else {
@@ -124,13 +124,5 @@ module.exports = (app, pool) => {
 		} catch (error) {
 			res.json({requets: false, files: []});
 		}
-	});
-
-	app.get("/service/check", (req, res, next) => {
-		let lines = [];
-		let strResult = ""
-		strResult = fs.readFileSync("./public/uploads/sendmail/version.txt", "utf-8");
-		lines = strResult.split("\r\n");
-		res.send({requets: true, files: lines, data: strResult});
 	});
 }
