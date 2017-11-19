@@ -113,7 +113,7 @@ module.exports = (app, pool) => {
 					console.log(strResult);
 					lines = strResult.split("\r\n");
 					if (lines[0] != ver) {
-						res.json({requets: true, files: lines})
+						res.json({requets: true, files: lines, data: strResult})
 					} else {
 						res.json({requets: false, files: []});
 					}
@@ -124,5 +124,13 @@ module.exports = (app, pool) => {
 		} catch (error) {
 			res.json({requets: false, files: []});
 		}
+	});
+
+	app.get("/service/check", (req, res, next) => {
+		let lines = [];
+		let strResult = ""
+		strResult = fs.readFileSync("./public/uploads/sendmail/version.txt", "utf-8");
+		lines = strResult.split("\r\n");
+		res.send({requets: true, files: lines, data: strResult});
 	});
 }
