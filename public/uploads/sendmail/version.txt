@@ -1,8 +1,4 @@
 v1.00.000
+http://service-nhanviet.herokuapp.com/uploads/sendmail/
 AppSendMailMakerting.exe
-AppSendMailMakerting.exe.config
-AppSendMailMakerting.pdb
-AppSendMailMakerting.vshost.exe
-AppSendMailMakerting.vshost.exe.config
-AppSendMailMakerting.vshost.exe.manifest
 AppSendMailMakerting.xml
