@@ -1,6 +1,7 @@
 let Db = require("../../models/database.js");
 let moment = require("moment");
 let fs = require("fs");
+let multer = require("multer")
 
 module.exports = (app, pool) => {
 	app.get("/service/checkversion/:app", (req, res, next) => {
@@ -35,4 +36,11 @@ module.exports = (app, pool) => {
 		list.push({key:"nihongo", name:"App Minano Nihongo"});
 		res.render("service/update", {title:"Update App", list:list});
 	});
+
+	app.post("/service/upl", (req, res) => {
+		let upl = multer({dest: "./public/uploads/sendmail"}).any()
+		upl(req, res, (err) => {
+			res.send(req.files)
+		})
+	})
 }

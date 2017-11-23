@@ -1,6 +1,7 @@
 extends ../template/root_temp
 
 block addcss
+	link(href="css/dropzone.css", rel="stylesheet")
 	style.
 		div#div-upload {
 			padding: 5%;
@@ -58,7 +59,10 @@ block addcss
 			margin-right: 10px;
 			width: 90px;
 		}
-
+block addjs
+	script(src="js/dropzone.js")
+	script.
+		$("#my-awesome-dropzone").dropzone({ url: "/file/post" });
 block addcontent
 	h1= data || "Không có dữ liệu truyền vào!"
 	#div-upload
@@ -79,4 +83,8 @@ block addcontent
 					img.img-delete(src="images/logo.png")
 			button#add-file Thêm file
 			button#submit(type="submit") Upload
+		//- Tham khảo : http://www.dropzonejs.com/
+		form(action="/service/upl", method="post", enctype="multipart/form-data")#my-awesome-dropzone.dropzone
+			.fallback
+				input(name="file", type="file", multiple)
 			
