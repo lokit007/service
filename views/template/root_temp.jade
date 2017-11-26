@@ -16,6 +16,16 @@ html(lang="#{ clanguage }")
         script(src="js/eModal.min.js")
         script(src="js/admin.js")
         script(src="ckeditor/ckeditor.js")
+        script(src="js/moment.min.js")
+        script.
+            $(document).ready(function() {
+                var then = $('#clock-time'),
+                    update = function() {
+                        then.html(moment(new Date()).format("YYYY/MM/DD HH:mm:ss"));
+                    };
+                update();
+                setInterval(update, 1000);
+            });
         //- Thu vien them vao header
         block addcss
         block addjs
@@ -40,13 +50,65 @@ html(lang="#{ clanguage }")
                     p Noi dung chinh hien thi
             #div-right
                 block addright
-                    h2 Cac thong tin cap nhat, link lien ket, quang cao, ...
+                    .div-right
+                        .item-right
+                            span
+                                img(src="images/clock.png")
+                                i#clock-time= "2017/11/24 20:09:30"
+                        block additemright1
+                        .item-right
+                            span.item-tittle Chủ đề được quan tâm
+                            .item-content
+                                ul
+                                    li: a(href="#") Chu de mot
+                                    li: a(href="#") Chu de hai
+                                    li: a(href="#") Chu de ba
+                                    li: a(href="#") Chu de bon
+                                    li: a(href="#") Chu de nam
+                        .item-right
+                            span.item-tittle Tin tức mới nhất
+                            .item-content
+                                ul
+                                    li: a(href="#") Chu de mot
+                                    li: a(href="#") Chu de hai
+                                    li: a(href="#") Chu de ba
+                                    li: a(href="#") Chu de bon
+                                    li: a(href="#") Chu de nam
+                        .item-right
+                            span.item-tittle Video chia sẻ
+                            .item-content
+                                embed(width="295", height="150", src="http://www.youtube.com/embed/WxKWMeW20Hk")
+                        block additemright2
+                        .item-right
+                            span.item-tittle Thông tin thêm
+                            .item-content
+                                iframe#fr1(style="border: none;", src="https://www.tygia.com/api.php?column=1&title=0&chart=0&gold=1&rate=1&ngoaite=usd,jpy,chf,eur,gbp,hkd&expand=0&color=333333&nganhang=VIETCOM&fontsize=80&ngay", width="100%", height="350")
+                        block additemright3
             .div-clear
         block addfooter
             #div-footer
+                span#copyright @Copyright 
+                    i#from Nhanviet 
+                    i 2017 
                 .div-item
-                    h4 Footer heare
+                    h4 Thông tin liên hệ
+                    label Lokit007[Hồ Viết Nhân]
+                    a(href="mailto:it007bk@gmail.com") it007bk@gmail.com
+                    address 447/03 Hải Phòng, Chính Gián, Thanh Khê, Đà Nẵng
                 .div-item
-                    h4 Footer heare
+                    h4 Liên kết nhanh
+                    a(href="http://google.com", target="_blank") google.com
+                    a(href="https://www.w3schools.com/default.asp", target="_blank") w3schools.com
+                    a(href="http://hocwebchuan.com/reference/jquery/", target="_blank") hocwebchuan.com
+                    a(href="http://getbootstrap.com.vn/css/", target="_blank") bootstrap.com
+                    a(href="http://fontawesome.io/icons/", target="_blank") fontawesome
+                block adddivitem
+                .div-item
+                    h4 Đăng ký nhận bản tin
+                    form(action="#", method="post")
+                        p Đăng ký nhận thông tin từ hệ thống
+                        input#email-register(type="email", name="emailregister", placeholder="Email nhận tin ...")
+                        input(type="submit", value="Regist")
                 .div-clear
+        block addafter
 

@@ -1,120 +1,17 @@
 // Biến môi trường
 var i18n = {};
-// Các hàm xử lý chung cho các page
-$.ajax({
-    url: "/translate",
-    type: "GET",
-    datatype: "json",
-    success: function(data){
-        i18n = data;
-    }
-});
+// // Các hàm xử lý chung cho các page
+// $.ajax({
+//     url: "/translate",
+//     type: "GET",
+//     datatype: "json",
+//     success: function(data){
+//         i18n = data;
+//     }
+// });
 // Xử lý khi trang load hoàn tất
 $(document).ready(function(){
-    // Xu ly menu
-    $("#menu").click(function(){
-        if ($("#sub-memu").attr("style") == "display: initial;") {
-            $("#sub-memu").attr("style", "display: none;");
-            $("#btn-show-menu").attr("class", "fa fa-bars");
-        } else {
-            $("#sub-memu").attr("style", "display: initial;");
-            $("#btn-show-menu").attr("class", "fa fa-bars fa-rotate-90");
-        }
-   });
-   $("#sub-memu li").click(function(){
-       if($(this).hasClass('active') == false) {
-           var sel = $(this).attr("data");
-           switch(sel) {
-                case "1":
-                    window.location.href = './personnel';
-                    break;
-                case "2":
-                    window.location.href = './category';
-                    break;
-                case "3":
-                    window.location.href = './partner';
-                    break;
-                case "4":
-                    window.location.href = './warehouse';
-                    break;
-                case "5":
-                    window.location.href = './statistical';
-                    break;
-                case "6":
-                    window.location.href = './message';
-                    break;
-                default:
-                    window.location.href = './branch';
-            }
-       }
-   });
-   // Xu ly form update Category
-   $("#ic-close").click(function(){
-       $("#f-update").hide(200);
-   });
-   $("#ic-show").click(function(){
-       $("#f-update").show(100);
-       $("#name").val("");
-       $("#depiction").val("");
-       $("#id").val("-1");
-   });
-   $('#d-contain').after("<i id='backToTop' class='fa fa-arrow-circle-up fa-3x' aria-hidden='true' style='display: none; position: fixed; bottom: 5px; right: 10px; cursor: pointer;'></i>");
-   // Top page
-   $(window).scroll(function() {
-        if ($(this).scrollTop() > 100) {
-            $('#backToTop').fadeIn('slow');
-        } else {
-            $('#backToTop').fadeOut('slow');
-        }
-    });
-    $("#backToTop").click(function(){
-       $('html, body').animate({ scrollTop: 0 }, 500);
-   });
-   $("#d-fixheight").attr('style', 'max-height: ' + ($('#d-contain').height() - $("#view").offset().top - 10) + "px;");
-    $(window).resize(function(){
-        $("#d-fixheight").attr('style', 'max-height: ' + ($('#d-contain').height() - $("#view").offset().top - 10) + "px;");
-    });
-   // Input search
-   $('input.search-control').on('change', function(){
-        $('tbody').children('tr').remove();
-        switch($(this).attr('data')) {
-            case "branch" : 
-                searchbranch();
-                break;
-            case "category" : 
-                searchcategory();
-                break;
-            case "danhmuc" : 
-                searchbranch();
-                break;
-            case "sanpham" : 
-                searchbranch();
-                break;
-            case "khohang" : 
-                searchbranch();
-                break;
-            default : 
-                console.log("Not control search");
-        }
-   });
-   // Tab index
-   $('input.form-control').on('keypress', function(e){
-        if(e.which == 13) {
-            e.preventDefault();
-            var index = +$(this).attr("index") + 1;
-            $("[index='" + index +"']").focus();
-        }
-    });
-   $('#btn-file').on("change",function(event) {
-        var tmppath = URL.createObjectURL(event.target.files[0]);
-        console.log(tmppath);
-    });
-    // Even model
-    $('#mdShowMes').on('hidden.bs.modal', function (e) {
-        if($('#md-div').hasClass('modal-error') === false) {
-            window.location.reload(true);
-        }
-    });
+
 });
 /**
  * Alert design : Gọi để hiển thị alert

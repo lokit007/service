@@ -17,7 +17,7 @@ div#div-left {
 .div-item {
     min-width: 300px;
     float: left;
-    padding: 5px 5px;
+    padding: 5px 25px 25px 20px;
 }
 /* Style Header */
 div#div-logo {
@@ -66,9 +66,84 @@ div#div-solo>p {
 div#div-menu {
     background-color: lightskyblue;
     box-shadow: 1px 2px 5px grey;
+    margin-bottom: 0px;
+}
+.affix {
+    top: 0;
+    right: 0;
+    left: 0;
+}
+img#icon-home {
+    width: 50px;
+    padding: 5px;
+}
+form#search {
+    width: 100%;
+    margin-top: 5%;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 /* Style content */
 div#div-content {
     box-shadow: 1px 2px 10px grey;
+}
+
+/* Style right */
+.item-right {
+    border: 2px solid gray;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    min-width: 300px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 2px darkgreen;
+}
+.item-right>span>img {
+    width: 30px;
+    margin: -8px 10px 0px 5px;
+}
+i#clock-time {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: red;
+    text-shadow: 1px 2px 2px white;
+}
+span.item-tittle {
+    display: block;
+    height: 35px;
+    font-size: 1.5em;
+    background-color: darkred;
+    color: white;
+    padding: 5px 0px 5px 5px;
+    border-bottom: 1px solid white;
+    overflow: hidden;
+}
+.item-content {
+    padding: 5px;
+    min-height: 150px;
+}
+
+/* Style footer */
+span#copyright {
+    display: block;
+    padding: 5px;
+    font-size: 0.85em;
+    color: gray;
+}
+
+span#copyright>i:first-child {
+    font-weight: 600;
+}
+
+.div-item>h4 {
+    font-size: 1.3em;
+    font-weight: 600;
+    display: block;
+}
+.div-item>label {
+    display: block;
+}
+.div-item>a {
+    display: block;
+    margin: 5px 0px;
 }

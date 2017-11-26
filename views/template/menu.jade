@@ -1,23 +1,45 @@
-#div-menu.container-fluid
+#div-menu.container-fluid.navbar(data-spy="affix", data-offset-top="190")
 	.navbar-header
-		a(class="navbar-brand", href="#") NHANVIET
-		button(type="button", data-toggle="collapse", data-target="#navbar", aria-expanded="true", aria-controls="navbar").navbar-toggle
-			span.sr-only Toggle navigation
-			span.icon-bar
-			span.icon-bar
-			span.icon-bar
-	#navbar.navbar-collapse.collapse(aria-expanded="false")
+		a(href="#"): img#icon-home(src="images/home-icon.png")
+		button.navbar-toggle(data-toggle="collapse", data-target="#navbar", aria-expanded="false", aria-controls="navbar", , style="padding: 1px;")
+			i.fa.fa-bars.fa-2x(aria-hidden="true")
+	#navbar.navbar-collapse.collapse(aria-expanded="true")
 		ul.nav.navbar-nav
+			li: form#search(action="#")
+				input(type="text", placeholder="Tìm kiếm ...")
+				input(type="submit", value="Search")
 			li(class="#{ active==1 ? 'active':'' }"): a(href="#")
 				i.fa.fa-shopping-basket
 				|  Cửa hàng
 			li(class="#{ active==2 ? 'active':'' }"):  a(href="#")
 				i.fa.fa-share-alt-square
 				|  Đăng bài
+			li.dropdown(class="#{ active==1 ? 'active':'' }")
+				a.dropdown-toggle(href="#", data-toggle="dropdown")
+					i.fa.fa-shopping-basket
+					|  Cửa hàng
+					span.caret
+				ul.dropdown-menu
+					li: a(href="#")
+						i.fa.fa-shopping-basket
+						|  Cửa hàng
+					li: a(href="#")
+						i.fa.fa-share-alt-square
+						|  Đăng bài
+			li(class="#{ active==2 ? 'active':'' }"):  a(href="#")
+				i.fa.fa-share-alt-square
+				|  Đăng bài
+			li.dropdown(class="#{ active==1 ? 'active':'' }")
+				a.dropdown-toggle(href="#", data-toggle="dropdown")
+					span.caret
+				ul.dropdown-menu
+					li: a(href="#")
+						i.fa.fa-shopping-basket
+						|  Cửa hàng
+					li: a(href="#")
+						i.fa.fa-share-alt-square
+						|  Đăng bài
 		ul.nav.navbar-nav.navbar-right
 			li: a(href="/signup")
 				span.glyphicon.glyphicon-user
 				|  #{ __("menu-signup") }
-			li: a(href="/login")
-				span.glyphicon.glyphicon-log-in
-				|  #{ __("menu-login") }
