@@ -1,0 +1,106 @@
+.div-clear {
+    clear: both;
+}
+div#div-content {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+div#div-left {
+    height: 100%;
+    width: 270px;
+    float: left;
+	border-right: 2px solid gray;
+	overflow-x: auto;
+}
+div#div-right {
+    height: 100%;
+    margin-left: 270px;
+    overflow-x: auto;
+}
+/* Menu style */
+.nav>li>a>i, .nav>li>ul>li>a>i {
+    width: 25px;
+    text-align: center;
+}
+.nav>li>a>span.caret {
+    float: right;
+    margin-top: 8px;
+}
+.nav>li>ul li:hover {
+    background-color: lightgray;
+}
+.nav>li>ul li>a:hover {
+	text-decoration: blink;
+}
+li.show-menu {
+    cursor: pointer;
+}
+ul.sub-menu {
+    display: none;
+}
+.view {
+	display: inherit !important;
+}
+div#div-admin {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid lightgray;
+    box-shadow: 0px 1px 1px lightcyan;
+}
+div#div-admin>span {
+    display: block;
+    text-align: center;
+    background-color: black;
+    color: greenyellow;
+    font-size: 1.2em;
+    padding: 5px;
+    font-weight: 600;
+}
+div#div-admin>img {
+    width: 85px;
+    height: 85px;
+	float: left;
+	margin-right: 5px;
+	border: 1px solid lightgray;
+}
+div#div-alert {
+    margin-top: 20px;
+}
+div#div-alert>ul {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+div#div-alert>ul>li {
+    display: inline-block;
+    min-width: 40px;
+    height: 30px;
+    padding: 5px;
+    cursor: pointer;
+}
+div#div-alert>ul>li>a>span {
+    float: right;
+    margin-top: -10px;
+    color: white;
+    background-color: mediumvioletred;
+    padding: 0px 4px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+}
+p#user {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 10px;
+    color: red;
+	text-shadow: 1px 2px 2px lightgrey;
+	margin-bottom: 0px;
+}
+div#action {
+    text-align: right;
+    margin-top: -22px;
+}
+div#action>button {
+    margin-right: 5px;
+}
