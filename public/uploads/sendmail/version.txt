@@ -1,4 +1,0 @@
-v1.00.000
-http://service-nhanviet.herokuapp.com/uploads/sendmail/
-AppSendMailMakerting.exe
-AppSendMailMakerting.xml

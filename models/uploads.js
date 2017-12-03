@@ -2,7 +2,7 @@
 
 let multer = require("multer")
 let fs = require("fs")
-const pathRoot = "./public/uploads/";
+const pathRoot = "./public/uploads";
 
 /**
  * Add new Folder for user
@@ -11,7 +11,8 @@ const pathRoot = "./public/uploads/";
  * @param {* false if user is exists else true} isNewUser 
  */
 function newFolder(user, folder, isNewUser=false, cb) {
-	let pathUser = pathRoot + user.username;
+	let pathUser = pathRoot
+	if(user.username !== undefined) pathUser += "/" + user.username
 	try {
 		if(fs.existsSync(pathUser)) {
 			pathUser = pathUser + "/" + folder;
@@ -40,7 +41,8 @@ function newFolder(user, folder, isNewUser=false, cb) {
  * @param {* Neme new Folder} folderNew 
  */
 function renameFolser(user, folderOld, folderNew, cb) {
-	let pathUser = pathRoot + user.username;
+	let pathUser = pathRoot
+	if(user.username !== undefined) pathUser += "/" + user.username
 	try {
 		fs.rename(pathUser + "/" + folderOld, pathUser + "/" + folderNew, (err) => {
 			if(err) cb(err, {state: false});
@@ -56,7 +58,9 @@ function renameFolser(user, folderOld, folderNew, cb) {
  * @param {* Folder delete} folder 
  */
 function deleteFolder(user, folder, cb) {
-	let pathUser = pathRoot + user.username + "/" + folder;
+	let pathUser = pathRoot
+	if(user.username !== undefined) pathUser += "/" + user.username
+	if(folder != null) pathUser += "/" + folder
 	try {
 		if(fs.existsSync(pathUser)) {
 			getInfoPath(user, folder, (err, data) => {
@@ -86,7 +90,8 @@ function deleteFolder(user, folder, cb) {
  * @param {* Fillter} fillter 
  */
 function getFolder(user, folder, cb) {
-	let pathUser = pathRoot + user.username;
+	let pathUser = pathRoot
+	if(user.username !== undefined) pathUser += "/" + user.username
 	if (folder !== null) pathUser = pathUser + "/" + folder
 	try {
 		fs.readdir(pathUser, "utf8", (err, pathSub) => {
@@ -106,7 +111,9 @@ function getFolder(user, folder, cb) {
  * @param {* Callback} cb 
  */
 function getInfoPath(user, path, cb) {
-	let pathUser = pathRoot + user.username + "/" + path
+	let pathUser = pathRoot
+	if(user.username !== undefined) pathUser += "/" + user.username
+	if(path != null) pathUser += "/" + path
 	try {
 		fs.stat(pathUser, (err, stats) => {
 			if(err) cb(err, {state: false})

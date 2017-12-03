@@ -1,7 +1,9 @@
 let Db = require("../../models/database.js");
+let constant = require("../../models/constant.js");
 let moment = require("moment");
 let fs = require("fs");
 let multer = require("multer")
+let fileServer = require("../../models/uploads.js")
 
 module.exports = (app, pool) => {
 	app.get("/service/checkversion/:app", (req, res, next) => {
@@ -31,10 +33,38 @@ module.exports = (app, pool) => {
 
 	app.get("/service/update", (req, res, next) => {
 		let list = [];
+		let listFiles = [];
+		let fileInfo = [];
 		list.push({key:"sendmail", name:"App Send Email Marketing"});
 		list.push({key:"english", name:"App Leaning English"});
 		list.push({key:"nihongo", name:"App Minano Nihongo"});
-		res.render("service/update", {title:"Update App", list:list});
+		fileServer.folder(req, res, null, (err, data) => {
+			if(err) console.log(err)
+			let tyle = req.query.tyle
+			if(tyle == undefined || tyle == "" || tyle=="all") listFiles = data.files
+			else {
+				let math = new RegExp(constant.regex(tyle))
+				data.files.forEach(element => {
+					if(math.test(element)) listFiles.push(element)
+				});
+			}
+			new Promise((rel, rej) => {
+				listFiles.forEach((element, i, listFiles) => {
+					fileServer.info(req, res, element, (err, file) => {
+						if(err) rej(err)
+						file.name = element
+						fileInfo.push(file.info)
+						if(i == listFiles.length - 1) rej(fileInfo)
+					})
+				})
+			}).then(result => {
+				console.log(result)
+				res.render("service/update", {title:"Update App", list:list, files:result});
+			}).catch(err => {
+				console.log(err)
+				res.render("service/update", {title:"Update App", list:list, files:[]});
+			})
+		})
 	});
 
 	app.post("/service/upl", (req, res) => {
