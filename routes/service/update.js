@@ -49,28 +49,28 @@ module.exports = (app, pool) => {
 				});
 			}
 			new Promise((rel, rej) => {
-				listFiles.forEach((element, i, listFiles) => {
+				Array.forEach((element, i, listFiles) => {
 					fileServer.info(req, res, element, (err, file) => {
 						if(err) rej(err)
-						file.name = element
+						file.info.name = element
 						fileInfo.push(file.info)
-						if(i == listFiles.length - 1) rej(fileInfo)
+						if(i == listFiles.length - 1) rel(fileInfo)
 					})
 				})
 			}).then(result => {
-				console.log(result)
 				res.render("service/update", {title:"Update App", list:list, files:result});
 			}).catch(err => {
-				console.log(err)
 				res.render("service/update", {title:"Update App", list:list, files:[]});
 			})
 		})
 	});
 
-	app.post("/service/upl", (req, res) => {
-		let upl = multer({dest: "./public/uploads/sendmail"}).any()
-		upl(req, res, (err) => {
-			res.send(req.files)
+	app.post("/service/upl/:keyapp", (req, res) => {
+		let folder = req.params.keyapp
+		if(folder == undefined || folder == "") folder = null
+		fileServer.upload(req, res, folder, (err, result) => {
+			if(err) res.send(401, err)
+			res.send(result.data)
 		})
 	});
 

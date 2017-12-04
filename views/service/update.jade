@@ -19,9 +19,7 @@ block addContent
 			button#add-file Thêm file
 			button#submit(type="submit") Cập nhật
 	#dragandrophandler
-	#xemnay
-		| Chac co
 		- each file in files
-				.statusbareven
-					.filename Ten
-					.filesize Size
+			.statusbar
+				.filename= file.name
+				.filesize= file.size

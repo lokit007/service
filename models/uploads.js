@@ -135,10 +135,10 @@ function upload(req, res, folder, cb) {
 	try {
 		let storage = multer.diskStorage({
 			destination: function (req, file, cb1) {
-				if(folder == null) cb1(null, 'uploads/')
+				if(folder == null) cb1(null, pathRoot)
 				else {
 					newFolder({username: req.params.user}, folder, false, (err, data) => {
-						if(err) cb1(null, 'uploads/')
+						if(err) cb1(null, pathRoot)
 						else cb1(null, data.fullpath)
 					})
 				}

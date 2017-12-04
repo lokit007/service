@@ -1,6 +1,7 @@
 function sendFileToServer(formData, status) {
-    var uploadURL = "/service/upl"; //Upload URL
+    var uploadURL = "/service/upl/" + $("#app-select").val(); //Upload URL
     var extraData = {}; //Extra Data.
+    formData.append('app',"sendmail");
     var jqXHR = $.ajax({
         xhr: function () {
             var xhrobj = $.ajaxSettings.xhr();
@@ -75,6 +76,7 @@ function handleFileUpload(files, obj) {
     for (var i = 0; i < files.length; i++) {
         var fd = new FormData();
         fd.append('file', files[i]);
+        fd.append('keyapp', 'sendmail');
         var status = new createStatusbar(obj); //Using this we can set progress.
         status.setFileNameSize(files[i].name, files[i].size);
         sendFileToServer(fd, status);
