@@ -84,6 +84,7 @@ function handleFileUpload(files, obj) {
 }
 $(document).ready(function () {
     var obj = $("#dragandrophandler");
+    var objSelect = $("#app-select");
     obj.on('dragenter', function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -112,5 +113,26 @@ $(document).ready(function () {
     $(document).on('drop', function (e) {
         e.stopPropagation();
         e.preventDefault();
+    });
+    objSelect.on('change', function(e) {
+        var keyapp = objSelect.val();
+        if(keyapp != "") {
+            $.ajax({
+                url: "/service/info/" + keyapp,
+                type: "POST",
+                success: function (data) {
+                    if(data.status == "Success") {
+                        $("#ver-upload").val(data.ver);
+                        obj.empty();
+                        data.data.forEach(element => {
+                            this.statusbar = $("<div class='statusbar'></div>");
+                            this.filename = $("<div class='filename'>"+ element.name +"</div>").appendTo(this.statusbar);
+                            this.size = $("<div class='filesize'>"+ element.size +"</div>").appendTo(this.statusbar);
+                            this.statusbar.appendTo(obj);
+                        });
+                    }
+                }
+            });
+        }
     });
 });

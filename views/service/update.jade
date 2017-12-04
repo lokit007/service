@@ -10,7 +10,7 @@ block addContent
 	h1= data || "Không có dữ liệu truyền vào!"
 	#div-upload
 		form(action="/service/update", method="post")#f-upload-file
-			select#app-select(name="app")
+			select#app-select(name="app", on)
 				- each app in list
 					option(value="#{ app.key }")= app.name
 			br

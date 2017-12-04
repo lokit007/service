@@ -33,12 +33,19 @@ module.exports = (app, pool) => {
 
 	app.get("/service/update", (req, res, next) => {
 		let list = [];
-		let listFiles = [];
-		let fileInfo = [];
+		list.push({key:"", name:"*** Chọn ứng dụng ***"});
 		list.push({key:"sendmail", name:"App Send Email Marketing"});
 		list.push({key:"english", name:"App Leaning English"});
 		list.push({key:"nihongo", name:"App Minano Nihongo"});
-		fileServer.folder(req, res, null, (err, data) => {
+		res.render("service/update", {title:"Update App", list:list, files:{}});
+	});
+
+	app.post("/service/info/:keyapp", (req, res, next) => {
+		let listFiles = [];
+		let fileInfo = [];
+		let folder = req.params.keyapp
+		if(folder == undefined || folder == "") folder = null
+		fileServer.folder(req, res, folder, (err, data) => {
 			if(err) console.log(err)
 			let tyle = req.query.tyle
 			if(tyle == undefined || tyle == "" || tyle=="all") listFiles = data.files
@@ -49,21 +56,25 @@ module.exports = (app, pool) => {
 				});
 			}
 			new Promise((rel, rej) => {
-				Array.forEach((element, i, listFiles) => {
+				if(folder != null) req.params.user = folder
+				listFiles.forEach((element, i) => {
 					fileServer.info(req, res, element, (err, file) => {
 						if(err) rej(err)
 						file.info.name = element
+						let size = parseFloat(file.info.size) / 1024
+						if(parseInt(size) >= 1024) file.info.size = (file.info.size/1024).toFixed(2) + " MB"
+						else file.info.size = size.toFixed(2) + " KB"
 						fileInfo.push(file.info)
 						if(i == listFiles.length - 1) rel(fileInfo)
 					})
 				})
 			}).then(result => {
-				res.render("service/update", {title:"Update App", list:list, files:result});
+				res.send({status:"Success", ver:"v1.00.0000", data:result});
 			}).catch(err => {
-				res.render("service/update", {title:"Update App", list:list, files:[]});
+				res.send({status:"Error", ver:"", data:{}});
 			})
 		})
-	});
+	})
 
 	app.post("/service/upl/:keyapp", (req, res) => {
 		let folder = req.params.keyapp
