@@ -85,5 +85,14 @@ module.exports = (app, pool) => {
 		})
 	});
 
+	app.post("/service/del", (req, res) => {
+		let folder = req.body.app + "/" + req.body.key
+		if(folder == undefined || folder == "") folder = null
+		console.log(req.body)
+		fileServer.del(req, res, folder, (err, data) => {
+			if(err) res.send(401, err)
+			res.send(data)
+		})
+	});
 	
 }

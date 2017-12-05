@@ -37,6 +37,7 @@ function createStatusbar(obj) {
     var row = "odd";
     if (rowCount % 2 == 0) row = "even";
     this.statusbar = $("<div class='statusbar " + row + "'></div>");
+    this.iconremove = $("<span onclick='onRemove(this)' class='glyphicon glyphicon-remove'></span>").appendTo(this.statusbar);
     this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
     this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
     this.progressBar = $("<div class='progressBar'><div></div></div>").appendTo(this.statusbar);
@@ -53,7 +54,8 @@ function createStatusbar(obj) {
         else {
             sizeStr = sizeKB.toFixed(2) + " KB";
         }
-
+        this.iconremove.attr('data', name)
+        this.filename.attr('data', name)
         this.filename.html(name);
         this.size.html(sizeStr);
     }
@@ -76,10 +78,29 @@ function handleFileUpload(files, obj) {
     for (var i = 0; i < files.length; i++) {
         var fd = new FormData();
         fd.append('file', files[i]);
-        fd.append('keyapp', 'sendmail');
         var status = new createStatusbar(obj); //Using this we can set progress.
+        $("#dragandrophandler .statusbar .filename[data='"+files[i].name+"']").parent().remove()
         status.setFileNameSize(files[i].name, files[i].size);
         sendFileToServer(fd, status);
+    }
+}
+function onRemove(e) {
+    var keyfile = $(e).attr("data");
+    var app = $("#app-select").val();
+    if(app != "") {
+        $.ajax({
+            url: "/service/del",
+            type: "POST",
+            data: {
+                key: keyfile,
+                app: app
+            },
+            success: function (data) {
+                if(data.state == true) {
+                    $(e).parent().remove();
+                }
+            }
+        });
     }
 }
 $(document).ready(function () {
@@ -101,6 +122,12 @@ $(document).ready(function () {
         //We need to send dropped files to Server
         handleFileUpload(files, obj);
     });
+    obj.on('click', function(e) {
+        $("#file").click();
+        $('#file').change(function() {
+            handleFileUpload($('#file')[0].files, obj);
+        });
+    })
     $(document).on('dragenter', function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -126,7 +153,8 @@ $(document).ready(function () {
                         obj.empty();
                         data.data.forEach(element => {
                             this.statusbar = $("<div class='statusbar'></div>");
-                            this.filename = $("<div class='filename'>"+ element.name +"</div>").appendTo(this.statusbar);
+                            this.iconremove = $("<span onclick='onRemove(this)' data='"+ element.name +"' class='glyphicon glyphicon-remove'></span>").appendTo(this.statusbar);
+                            this.filename = $("<div class='filename' data='"+ element.name +"'>"+ element.name +"</div>").appendTo(this.statusbar);
                             this.size = $("<div class='filesize'>"+ element.size +"</div>").appendTo(this.statusbar);
                             this.statusbar.appendTo(obj);
                         });

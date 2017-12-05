@@ -16,10 +16,8 @@ block addContent
 			br
 			label(for="ver-upload") Version
 			input#ver-upload.tb-input(type="text", name="url", placeholder="v1.00.000")
+			input#file(type="file", name="file", style="display:none;")
 			button#add-file Thêm file
 			button#submit(type="submit") Cập nhật
+	
 	#dragandrophandler
-		- each file in files
-			.statusbar
-				.filename= file.name
-				.filesize= file.size

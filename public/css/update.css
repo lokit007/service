@@ -117,3 +117,11 @@ form#f-upload-file>button {
     cursor:pointer;
     vertical-align:top
 }
+.statusbar>span:hover {
+    color: red;
+}
+.statusbar>span {
+    margin-right: 10px;
+    color: #924b4b;
+    cursor: pointer;
+}
