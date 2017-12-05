@@ -106,6 +106,9 @@ function onRemove(e) {
 $(document).ready(function () {
     var obj = $("#dragandrophandler");
     var objSelect = $("#app-select");
+    var objOpenFile = $("#open-file");
+    var objForm = $("#f-upload-file");
+
     obj.on('dragenter', function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -118,16 +121,12 @@ $(document).ready(function () {
     obj.on('drop', function (e) {
         $(this).css('border', '2px dotted #0B85A1');
         e.preventDefault();
-        var files = e.originalEvent.dataTransfer.files;
-        //We need to send dropped files to Server
-        handleFileUpload(files, obj);
+        var keyapp = objSelect.val();
+        if(keyapp != "") {
+            var files = e.originalEvent.dataTransfer.files;
+            handleFileUpload(files, obj);
+        } else eModal.alert("Bạn chưa chọn ứng dụng cần cập nhật!", "Dữ liệu đầu vào chưa có!")
     });
-    obj.on('click', function(e) {
-        $("#file").click();
-        $('#file').change(function() {
-            handleFileUpload($('#file')[0].files, obj);
-        });
-    })
     $(document).on('dragenter', function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -162,5 +161,28 @@ $(document).ready(function () {
                 }
             });
         }
+    });
+    objOpenFile.on('click', function(e) {
+        var keyapp = objSelect.val();
+        if(keyapp != "") $("#file").click();
+        else eModal.alert("Bạn chưa chọn ứng dụng cần cập nhật!", "Dữ liệu đầu vào chưa có!")
+        $('#file').change(function() {
+            handleFileUpload($('#file')[0].files, obj);
+        });
+    });
+    objForm.on('submit', function(e) {
+        var keyapp = objSelect.val();
+        if(keyapp != "") {
+            $.ajax({
+                type: "POST",
+                url: objForm.attr("action"),
+                data: objForm.serialize(),
+                success: function(data) {
+                    if(data == "Success") eModal.alert("Bạn đã cập nhật thành công!", "Thông báo từ server")
+                    else eModal.alert("Chưa cập nhật được phần mềm!<br>Vui lòng kiểm tra lại", "Lỗi cập nhật!")
+                }
+            });
+        } else eModal.alert("Bạn chưa chọn ứng dụng cần cập nhật!", "Dữ liệu đầu vào chưa có!")
+        e.preventDefault();
     });
 });

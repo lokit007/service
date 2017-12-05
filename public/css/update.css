@@ -37,30 +37,43 @@ label.lbl-size {
 }
 form#f-upload-file>button {
     float: right;
-    margin-right: 10px;
     width: 90px;
+    margin-top: -26px;
 }
 select#app-select {
     display: block;
     padding: 5px;
+    min-width: 300px;
+    font-weight: 600;
 }
 .tb-input {
     display: block;
     min-width: 300px;
     padding-left: 5px;
 }
-form#f-upload-file>button {
+.div-group-icon {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    margin-bottom: -35px;
+    font-size: 1.2em;
+    color: lightgray;
+}
+span#open-file {
     float: right;
-    margin-right: 10px;
-    width: 90px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+span#open-file:hover {
+    color: green;
 }
 #dragandrophandler {
-    border:2px dotted #0B85A1;
+    border: 2px dotted #0B85A1;
     width: 95%;
     min-height: 100px;
     text-align: left;
     vertical-align: middle;
-    padding: 10px;
+    padding: 35px 10px 10px 10px;
     margin: auto;
 }
 .progressBar {
@@ -86,7 +99,6 @@ form#f-upload-file>button {
 {
     border-top:1px solid #A9CCD1;
     min-height:25px;
-    width:700px;
     padding:10px 10px 0px 10px;
     vertical-align:top;
 }

@@ -18,6 +18,12 @@ div#div-right {
     margin-left: 270px;
     overflow-x: auto;
 }
+div#div-right>h1 {
+    font-weight: 600;
+    margin-bottom: 0px;
+    margin-left: 15px;
+    color: #d82a2a;
+}
 /* Menu style */
 .nav>li>a>i, .nav>li>ul>li>a>i {
     width: 25px;

@@ -6,8 +6,9 @@ block addcss
 block addjs
 	script(src="js/fileupload.js")
 	
+block addLogin
 block addContent
-	h1= data || "Không có dữ liệu truyền vào!"
+	h1= title || "Quản trị hệ thống Admin!"
 	#div-upload
 		form(action="/service/update", method="post")#f-upload-file
 			select#app-select(name="app", on)
@@ -15,9 +16,10 @@ block addContent
 					option(value="#{ app.key }")= app.name
 			br
 			label(for="ver-upload") Version
-			input#ver-upload.tb-input(type="text", name="url", placeholder="v1.00.000")
+			input#ver-upload.tb-input(type="text", name="ver", placeholder="v1.00.0000")
 			input#file(type="file", name="file", style="display:none;")
-			button#add-file Thêm file
 			button#submit(type="submit") Cập nhật
-	
+	.div-group-icon
+		label Click để thêm file hoặc kéo thả file vào khung bên dưới ...
+		span#open-file.glyphicon.glyphicon-plus
 	#dragandrophandler

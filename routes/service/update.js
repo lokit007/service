@@ -18,7 +18,7 @@ module.exports = (app, pool) => {
 					console.log(strResult);
 					lines = strResult.replace(/\r/gi, "").split("\n");
 					if (lines[0] != ver) {
-						res.json({requets: true, files: lines, data: strResult})
+						res.json({requets: true, files: lines})
 					} else {
 						res.json({requets: false, files: []});
 					}
@@ -30,16 +30,46 @@ module.exports = (app, pool) => {
 			res.json({requets: false, files: []});
 		}
 	});
-
 	app.get("/service/update", (req, res, next) => {
 		let list = [];
 		list.push({key:"", name:"*** Chọn ứng dụng ***"});
 		list.push({key:"sendmail", name:"App Send Email Marketing"});
 		list.push({key:"english", name:"App Leaning English"});
 		list.push({key:"nihongo", name:"App Minano Nihongo"});
-		res.render("service/update", {title:"Update App", list:list, files:{}});
+		res.render("service/update", {title:"Quản lí cập nhật phiên bản phầm mềm", list:list, files:{}});
+	}); 
+	app.post("/service/update", (req, res, next) => {
+		let app = req.body.app
+		let ver = req.body.ver
+		if(app == undefined || app == "" || ver == undefined || ver == "") res.send("Error")
+		else {
+			let pathRoot = req.baseUrl + "/uploads/" + app
+			let path = "./public/uploads/" + app + "/version.txt"
+			let strWrite = ver
+			strWrite += "\n" + pathRoot
+			fs.exists(path, (isExist) => {
+				if(isExist) {
+					fs.readdir("./public/uploads/" + app, "utf8", (err, pathSub) => {
+						if(err) {
+							res.send("Error")
+						} else {
+							pathSub.forEach(val => {
+								if(val != "version.txt") strWrite += "\n" + val
+							})
+							fs.writeFile(path, strWrite, 'utf8', (err) => {
+								if(err) { 
+									res.send("Error")
+								}
+								res.send("Success")
+							})
+						}
+					})
+				} else { 
+					res.send("Error")
+				}
+			})
+		}
 	});
-
 	app.post("/service/info/:keyapp", (req, res, next) => {
 		let listFiles = [];
 		let fileInfo = [];
@@ -60,12 +90,14 @@ module.exports = (app, pool) => {
 				listFiles.forEach((element, i) => {
 					fileServer.info(req, res, element, (err, file) => {
 						if(err) rej(err)
-						file.info.name = element
-						let size = parseFloat(file.info.size) / 1024
-						if(parseInt(size) >= 1024) file.info.size = (file.info.size/1024).toFixed(2) + " MB"
-						else file.info.size = size.toFixed(2) + " KB"
-						fileInfo.push(file.info)
-						if(i == listFiles.length - 1) rel(fileInfo)
+						if(element != "version.txt") {
+							file.info.name = element
+							let size = parseFloat(file.info.size) / 1024
+							if(parseInt(size) >= 1024) file.info.size = (file.info.size/1024).toFixed(2) + " MB"
+							else file.info.size = size.toFixed(2) + " KB"
+							fileInfo.push(file.info)
+						}
+						if(i >= listFiles.length - 1) rel(fileInfo)
 					})
 				})
 			}).then(result => {
@@ -75,7 +107,6 @@ module.exports = (app, pool) => {
 			})
 		})
 	})
-
 	app.post("/service/upl/:keyapp", (req, res) => {
 		let folder = req.params.keyapp
 		if(folder == undefined || folder == "") folder = null
@@ -84,7 +115,6 @@ module.exports = (app, pool) => {
 			res.send(result.data)
 		})
 	});
-
 	app.post("/service/del", (req, res) => {
 		let folder = req.body.app + "/" + req.body.key
 		if(folder == undefined || folder == "") folder = null

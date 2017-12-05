@@ -86,6 +86,7 @@ app.use(function(req, res, next){
     if(req.query.lang) {
         i18n.setLocale(req.query.lang);
     }
+    req.baseUrl = "http://localhost:3000"
     res.locals.active = 1;
     res.locals.page = req.path;
     res.locals.clanguage = req.getLocale();
