@@ -14,7 +14,7 @@ module.exports = (app, pool) => {
 
 	app.get("/service/email", (req, res, next) => {
 		let db = new Db(pool);
-		let sql = "select * from keymail limit 50;"
+		let sql = "select * from keymail limit 0, 20;"
 		try {
 			db.getData(sql)
 			.then(results => {

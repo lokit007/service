@@ -35,7 +35,7 @@ module.exports = (app, pool) => {
 		list.push({key:"", name:"*** Chọn ứng dụng ***"});
 		let strResult = fs.readFileSync("./public/uploads/app.txt", "utf-8");
 		let lines = strResult.replace(/\r/gi, "").split("\n");
-		for(i=0; i<lines.length; i+=2) {
+		for(i=0; i<lines.length-1; i+=2) {
 			list.push({key:lines[i], name:lines[i+1]});
 		}
 		res.render("service/update", {title:"Quản lí cập nhật phiên bản phầm mềm", list:list, files:{}});
@@ -137,38 +137,40 @@ module.exports = (app, pool) => {
 		if(act == "addnew") {
 			fileServer.add(req, res, key, (err, data) => {
 				if(err) res.send("Error")
-				fs.appendFileSync("./public/uploads/app.txt", "\n" + key + "\n" + app, "utf8")
-				res.send("Success")
+				fs.appendFileSync("./public/uploads/app.txt", key + "\n" + app + "\n", "utf8")
+				res.send({status:"Success", obj:{key:key, name:app}})
 			})
 		} else if(act == "del") {
 			console.log(key + " - " + app)
 			fileServer.folder(req, res, key, (err, data) => {
-				if(err) res.send(401, "Error")
-				if(data.state) {
+				if(err) res.send("Error")
+				else if(data.state) {
 					data.files.forEach(val => {
 						try {
 							fs.unlinkSync("./public/uploads/" + key + "/" + val)
 						} catch (error) {
-							res.send(401, "Error")
+							res.send("Error")
+							return
 						}
 					})
 					fileServer.del(req, res, key, (err, data) => {
-						if(err) res.send(401, "Error")
-						let strResult = fs.readFileSync("./public/uploads/sendmail/version.txt", "utf-8");
-						let lines = strResult.replace(/\r/gi, "").split("\n");
-						if(lines.length > 0) {
-							strResult = lines.filter(val => !(val != key || val != app)).join("\n")
-							fs.writeFile("./public/uploads/sendmail/version.txt", strResult, 'utf8', (err) => {
-								if(err) { 
-									res.send(401, "Error")
-								}
-								res.send(200, "Success")
-							})
-						}
-						res.send(200, "Success")
+						if(err) res.send("Error")
+						else fs.readFile("./public/uploads/app.txt", "utf-8", (err, data) => {
+							if(err) res.send("Error")
+							else {
+								let lines = data.replace(/\r/gi, "").split("\n");
+								if(lines.length > 0) {
+									let strResult = lines.filter(val => !(val == key || val == app)).join("\n")
+									fs.writeFile("./public/uploads/app.txt", strResult, 'utf8', (err) => {
+										if(err) res.send("Error")
+										else res.send("Success")
+									})
+								} else res.send("Success")
+							}
+						})
 					})
-				} else res.send(401, "Error")
+				} else res.send("Error")
 			})
-		} else res.send(401, "Error")
+		} else res.send("Error")
 	})
 }

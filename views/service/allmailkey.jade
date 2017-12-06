@@ -1,4 +1,4 @@
-extends ../template/root_temp
+extends ../template/admin_temp
 
 block addcss
 	style.
@@ -15,10 +15,17 @@ block addcss
 			padding-right: 5px;
 		}
 
-block addcontent
-	h1 Danh sách key đăng ký
-	hr
-	table(style="text-align:center;")
+block addLogin
+block addContent
+	h1= title || "Danh sách key đăng ký"
+	.div-setting
+		.div-btn-right
+			input(type="text", placeholder="Nội dung tìm kiếm ...")
+			button Tìm kiếm
+			button Cài đặt
+		.group-setting(style="display:none;")
+			p Set chi đây
+	table.table.table-hover.table-bordered(style="text-align:center;")
 		tr
 			th(style="width:50px") No.
 			th MAC
@@ -27,6 +34,7 @@ block addcontent
 			th Member
 			th Phone
 			th Email
+			th Action
 		- each key in data
 			tr
 				td #{ key.Id }
@@ -36,4 +44,11 @@ block addcontent
 				td.text-left #{ key.NameUser }
 				td.text-left #{ key.Phone }
 				td.text-left #{ key.Email }
+				td
+					span.glyphicon.glyphicon-off
+					span.glyphicon.glyphicon-time
+					span.glyphicon.glyphicon-trash
+	ul.pager
+			li.previous: a(href="#") &larr; Older
+			li.next: a(href="#") Newer &rarr;
 		

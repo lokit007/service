@@ -1,2 +1,0 @@
-sendmail
-App Send Mail Marketing

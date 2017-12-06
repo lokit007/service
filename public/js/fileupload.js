@@ -206,8 +206,9 @@ $(document).ready(function () {
                         url: "/service/act/addnew",
                         data: objForm.serialize(),
                         success: function(data) {
-                            if(data == "Success") {
+                            if(data.status == "Success") {
                                 alert("Bạn đã cập nhật thành công!")
+                                $("<option value="+data.obj.key+">"+data.obj.name+"</option>").appendTo(objSelect)
                             } else alert("Chưa cập nhật được phần mềm!<br>Vui lòng kiểm tra lại")
                         }
                     });
@@ -229,8 +230,11 @@ $(document).ready(function () {
                     name: app
                 },
                 success: function (data) {
-                    if(data == "Success") alert("Bạn đã xóa thành công!")
-                    else alert("Chưa xóa được phần mềm!<br>Vui lòng kiểm tra lại")
+                    if(data == "Success") {
+                        alert("Bạn đã xóa thành công!")
+                        $("#app-select option:selected").remove()
+                        obj.children().remove()
+                    } else alert("Chưa xóa được phần mềm!<br>Vui lòng kiểm tra lại")
                 }
             });
         }
