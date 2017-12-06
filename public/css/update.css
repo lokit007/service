@@ -36,9 +36,9 @@ label.lbl-size {
     color: gray;
 }
 form#f-upload-file>button {
-    float: right;
-    width: 90px;
-    margin-top: -26px;
+    width: 93px;
+    margin-right: 10px;
+    margin-top: 20px;
 }
 select#app-select {
     display: block;
@@ -136,4 +136,13 @@ span#open-file:hover {
     margin-right: 10px;
     color: #924b4b;
     cursor: pointer;
+}
+button:disabled {
+    color: gray;
+}
+form#f-add-app>input {
+    display: block;
+    padding-left: 5px;
+    width: 100%;
+    margin-bottom: 10px;
 }

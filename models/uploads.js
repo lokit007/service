@@ -192,6 +192,24 @@ function folder(req, res, folder, cb) {
 }
 module.exports.folder = folder
 /**
+ * New Folder
+ * @param {* Req} req 
+ * @param {* Res} res 
+ * @param {* Folder} folder 
+ * @param {* Callback} cb 
+ */
+function add(req, res, folder, cb) {
+	try {
+		newFolder({username: req.params.user}, folder, false, (err, data) => {
+			if(err) cb(err, data)
+			else cb(null, data)
+		})
+	} catch (error) {
+		cb(error, {state: false});
+	}
+}
+module.exports.add = add
+/**
  * Rename Folder
  * @param {* Req} req 
  * @param {* Res} res 

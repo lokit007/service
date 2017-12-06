@@ -33,9 +33,11 @@ module.exports = (app, pool) => {
 	app.get("/service/update", (req, res, next) => {
 		let list = [];
 		list.push({key:"", name:"*** Chọn ứng dụng ***"});
-		list.push({key:"sendmail", name:"App Send Email Marketing"});
-		list.push({key:"english", name:"App Leaning English"});
-		list.push({key:"nihongo", name:"App Minano Nihongo"});
+		let strResult = fs.readFileSync("./public/uploads/app.txt", "utf-8");
+		let lines = strResult.replace(/\r/gi, "").split("\n");
+		for(i=0; i<lines.length; i+=2) {
+			list.push({key:lines[i], name:lines[i+1]});
+		}
 		res.render("service/update", {title:"Quản lí cập nhật phiên bản phầm mềm", list:list, files:{}});
 	}); 
 	app.post("/service/update", (req, res, next) => {
@@ -47,8 +49,9 @@ module.exports = (app, pool) => {
 			let path = "./public/uploads/" + app + "/version.txt"
 			let strWrite = ver
 			strWrite += "\n" + pathRoot
-			fs.exists(path, (isExist) => {
-				if(isExist) {
+			fs.open(path, "a+", (err, fd) => {
+				if(err) res.send("Error")
+				else {
 					fs.readdir("./public/uploads/" + app, "utf8", (err, pathSub) => {
 						if(err) {
 							res.send("Error")
@@ -64,8 +67,6 @@ module.exports = (app, pool) => {
 							})
 						}
 					})
-				} else { 
-					res.send("Error")
 				}
 			})
 		}
@@ -124,5 +125,50 @@ module.exports = (app, pool) => {
 			res.send(data)
 		})
 	});
-	
+	app.get("/service/add", (req, res) => {
+		let strHtml = "<form action='/service/act/addnew' method='post' id='f-add-app'><label>Key app</label><input type='text' name='key' placeholder='key app ...'><label>Tên app</label><input type='text' name='name' placeholder='Tên app ...'></form>"
+		res.send(strHtml);
+	})
+	app.post("/service/act/:val", (req, res) => {
+		let act = req.params.val
+		let key = req.body.key
+		let app = req.body.name
+
+		if(act == "addnew") {
+			fileServer.add(req, res, key, (err, data) => {
+				if(err) res.send("Error")
+				fs.appendFileSync("./public/uploads/app.txt", "\n" + key + "\n" + app, "utf8")
+				res.send("Success")
+			})
+		} else if(act == "del") {
+			console.log(key + " - " + app)
+			fileServer.folder(req, res, key, (err, data) => {
+				if(err) res.send(401, "Error")
+				if(data.state) {
+					data.files.forEach(val => {
+						try {
+							fs.unlinkSync("./public/uploads/" + key + "/" + val)
+						} catch (error) {
+							res.send(401, "Error")
+						}
+					})
+					fileServer.del(req, res, key, (err, data) => {
+						if(err) res.send(401, "Error")
+						let strResult = fs.readFileSync("./public/uploads/sendmail/version.txt", "utf-8");
+						let lines = strResult.replace(/\r/gi, "").split("\n");
+						if(lines.length > 0) {
+							strResult = lines.filter(val => !(val != key || val != app)).join("\n")
+							fs.writeFile("./public/uploads/sendmail/version.txt", strResult, 'utf8', (err) => {
+								if(err) { 
+									res.send(401, "Error")
+								}
+								res.send(200, "Success")
+							})
+						}
+						res.send(200, "Success")
+					})
+				} else res.send(401, "Error")
+			})
+		} else res.send(401, "Error")
+	})
 }

@@ -108,6 +108,9 @@ $(document).ready(function () {
     var objSelect = $("#app-select");
     var objOpenFile = $("#open-file");
     var objForm = $("#f-upload-file");
+    var objAdd = $("#insert");
+    var objDel = $("#delete");
+    var objUpd = $("#update");
 
     obj.on('dragenter', function (e) {
         e.stopPropagation();
@@ -143,6 +146,8 @@ $(document).ready(function () {
     objSelect.on('change', function(e) {
         var keyapp = objSelect.val();
         if(keyapp != "") {
+            objDel.removeAttr('disabled')
+            objUpd.removeAttr('disabled')
             $.ajax({
                 url: "/service/info/" + keyapp,
                 type: "POST",
@@ -160,6 +165,9 @@ $(document).ready(function () {
                     }
                 }
             });
+        } else {
+            objDel.attr('disabled', 'true')
+            objUpd.attr('disabled', 'true')
         }
     });
     objOpenFile.on('click', function(e) {
@@ -185,4 +193,46 @@ $(document).ready(function () {
         } else eModal.alert("Bạn chưa chọn ứng dụng cần cập nhật!", "Dữ liệu đầu vào chưa có!")
         e.preventDefault();
     });
+    objAdd.on('click', function(e){
+        var options = {
+            url: "http://localhost:3000/service/add",
+            title:'Thêm ứng dụng',
+            size: eModal.size.sm,
+            buttons: [
+                {text: 'Thêm mới', style: 'info', close: true, click: function() {
+                    var objForm = $("#f-add-app");
+                    $.ajax({
+                        type: "POST",
+                        url: "/service/act/addnew",
+                        data: objForm.serialize(),
+                        success: function(data) {
+                            if(data == "Success") {
+                                alert("Bạn đã cập nhật thành công!")
+                            } else alert("Chưa cập nhật được phần mềm!<br>Vui lòng kiểm tra lại")
+                        }
+                    });
+                } },
+                {text: 'Hủy bỏ', style: 'danger', close: true }
+            ]
+        };
+        eModal.ajax(options);
+    })
+    objDel.on('click', function(e) {
+        var keyfile = $("#app-select").val();
+        var app = $("#app-select option:selected").text();
+        if(app != "") {
+            $.ajax({
+                url: "/service/act/del",
+                type: "POST",
+                data: {
+                    key: keyfile,
+                    name: app
+                },
+                success: function (data) {
+                    if(data == "Success") alert("Bạn đã xóa thành công!")
+                    else alert("Chưa xóa được phần mềm!<br>Vui lòng kiểm tra lại")
+                }
+            });
+        }
+    })
 });

@@ -18,7 +18,9 @@ block addContent
 			label(for="ver-upload") Version
 			input#ver-upload.tb-input(type="text", name="ver", placeholder="v1.00.0000")
 			input#file(type="file", name="file", style="display:none;")
-			button#submit(type="submit") Cập nhật
+			button#insert(type="button") Thêm app
+			button#delete(type="button", disabled) Xóa app
+			button#update(type="submit", disabled) Cập nhật
 	.div-group-icon
 		label Click để thêm file hoặc kéo thả file vào khung bên dưới ...
 		span#open-file.glyphicon.glyphicon-plus

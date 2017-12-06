@@ -1,4 +1,2 @@
 sendmail
 App Send Mail Marketing
-update
-App Update
