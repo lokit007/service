@@ -11,7 +11,57 @@ function onLoadData(url, method, data, cb) {
         }
     });
 }
-
+function eventSpan(){
+    var objRow = $(this).parent().parent();
+    var keymail = objRow.children(':first-child');
+    var stateOld = objRow.children(':nth-child(3)');
+    var date = objRow.children(':nth-child(4)')
+    var stateNew = 0;
+    if($(this).hasClass('glyphicon-off')) stateNew = -1; /* Khoa tam thoi */
+    else if($(this).hasClass('glyphicon-time')) stateNew = 3; /* Them 1 thang dung */
+    else if($(this).hasClass('glyphicon-trash')) stateNew = -2; /* Khoa vinh vien */
+    onLoadData('/service/changestate', 'post', {key:keymail.html(), old:stateOld.html(), new:stateNew}, function(err, result) {
+        if(err) eModal.alert("Không thể cập nhật dữ liệu!", "Lỗi cập nhật!");
+        else if(result.req) {
+            if(result.data.requets) {
+                if(stateNew < -1) objRow.remove()
+                else {
+                    stateOld.html(stateNew)
+                    date.html(result.data.keyvalue)
+                }
+                eModal.alert("Đã cập nhật dữ liệu trên hệ thống!", "Cập nhật thành công!");
+            } else eModal.alert("Không thể cập nhật dữ liệu!", "Lỗi cập nhật!");
+        } else eModal.alert("Không thể cập nhật dữ liệu!", "Lỗi cập nhật!");
+    })
+    // alert(keymail + " - " + stateOld + " - " + stateNew)
+}
+var page = 1
+function searchKeyMail(first) {
+    var search = $("#txtSearch").val();
+    if(first) page = 1
+    onLoadData("/service/searchemail", "get", {key:search, page:page}, function(err, result) {
+        if(err) eModal.alert("Không thể tìm kiếm dữ liệu bạn cần!", "Không tìm thấy dữ liệu!");
+        else if(result.req) {
+            if(result.data.req) {
+                $(".rowdata").remove();
+                result.data.data.forEach(element => {
+                    this.rowdata = $('<tr class="rowdata"></tr>');
+                    $('<td>'+element.Id+'</td>').appendTo(this.rowdata);
+                    $('<td class="text-left">'+element.MacKey+'</td>').appendTo(this.rowdata);
+                    $('<td>'+element.State+'</td>').appendTo(this.rowdata);
+                    $('<td>'+element.DateBlock+'</td>').appendTo(this.rowdata);
+                    $('<td class="text-left">'+element.NameUser+'</td>').appendTo(this.rowdata);
+                    $('<td class="text-left">'+element.Phone+'</td>').appendTo(this.rowdata);
+                    $('<td class="text-left">'+element.Email+'</td>').appendTo(this.rowdata);
+                    $('<td class="change"><span class="glyphicon glyphicon-off"></span><span class="glyphicon glyphicon-time"></span><span class="glyphicon glyphicon-trash"></span></td>').appendTo(this.rowdata);
+                    this.rowdata.appendTo(".table.table-hover.table-bordered");
+                });
+                var objSpanChange = $('td.change span.glyphicon');
+                objSpanChange.on('click', eventSpan)
+            } else eModal.alert("Không thể tìm kiếm dữ liệu bạn cần!", "Không tìm thấy dữ liệu!");
+        } else eModal.alert("Không thể tìm kiếm dữ liệu bạn cần!", "Không tìm thấy dữ liệu!");
+    });
+}
 $(document).ready(function () {
     $('.show-menu').click(function (e) {
         var obj = $(this).children('ul.sub-menu');
@@ -30,30 +80,7 @@ $(document).ready(function () {
         }
     })
     var objSpanChange = $('td.change span.glyphicon');
-    objSpanChange.on('click', function(){
-        var objRow = $(this).parent().parent();
-        var keymail = objRow.children(':first-child');
-        var stateOld = objRow.children(':nth-child(3)');
-        var date = objRow.children(':nth-child(4)')
-        var stateNew = 0;
-        if($(this).hasClass('glyphicon-off')) stateNew = -1; /* Khoa tam thoi */
-        else if($(this).hasClass('glyphicon-time')) stateNew = 3; /* Them 1 thang dung */
-        else if($(this).hasClass('glyphicon-trash')) stateNew = -2; /* Khoa vinh vien */
-        onLoadData('/service/changestate', 'post', {key:keymail.html(), old:stateOld.html(), new:stateNew}, function(err, result) {
-            if(err) eModal.alert("Không thể cập nhật dữ liệu!", "Lỗi cập nhật!");
-            else if(result.req) {
-                if(result.data.requets) {
-                    if(stateNew < -1) objRow.remove()
-                    else {
-                        stateOld.html(stateNew)
-                        date.html(result.data.keyvalue)
-                    }
-                    eModal.alert("Đã cập nhật dữ liệu trên hệ thống!", "Cập nhật thành công!");
-                } else eModal.alert("Không thể cập nhật dữ liệu!", "Lỗi cập nhật!");
-            } else eModal.alert("Không thể cập nhật dữ liệu!", "Lỗi cập nhật!");
-        })
-        // alert(keymail + " - " + stateOld + " - " + stateNew)
-    })
+    objSpanChange.on('click', eventSpan)
     google.charts.load('current', { packages: ['corechart'] });
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {

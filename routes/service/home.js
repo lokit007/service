@@ -30,6 +30,27 @@ module.exports = (app, pool) => {
 		}
 	});
 
+	app.get("/service/searchemail", (req, res, next) => {
+		let db = new Db(pool);
+		let sql = "select * from keymail where MacKey = ? or NameUser like N? or Phone like ? order by State desc limit ?, 20;"
+		let intPage = parseInt(req.query.page, 1)
+		let textSearch = req.query.key
+		try {
+			if(textSearch == undefined) textSearch = "";
+			if(isNaN(intPage) || intPage < 1) intPage = 1;
+			db.getData(sql, [textSearch, "%"+textSearch+"%", "%"+textSearch+"%", (intPage-1)*20])
+			.then(results => {
+				res.send({req: true, data: results});
+			})
+			.catch(err => {
+				res.json({req: false, data: null});
+			});
+		} catch (error) {
+			res.json({req: false, data: null});
+		}
+
+	})
+
 	app.post("/service/changestate", (req, res, next) => {
 		let db = new Db(pool);
 		let sql = "update keymail set State = ?, DateBlock = ? where Id = ?"

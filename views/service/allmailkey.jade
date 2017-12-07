@@ -23,8 +23,8 @@ block addContent
 	h1= title || "Danh sách key đăng ký"
 	.div-setting
 		.div-btn-right
-			input(type="text", placeholder="Nội dung tìm kiếm ...")
-			button Tìm kiếm
+			input#txtSearch(type="text", placeholder="Nội dung tìm kiếm ...")
+			button(onClick="searchKeyMail(true)") Tìm kiếm
 			button(data-open="#div-set") Chú thích
 		.group-setting#div-set.hide
 			i.fa.fa-spinner.fa-spin.fa-2x(aria-hidden="true")
@@ -40,7 +40,7 @@ block addContent
 			th Email
 			th Action
 		- each key in data
-			tr
+			tr.rowdata(class="row#{ key.State }")
 				td #{ key.Id }
 				td.text-left #{ key.MacKey }
 				td #{ key.State }
