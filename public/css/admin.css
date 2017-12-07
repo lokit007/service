@@ -129,7 +129,7 @@ tbody>tr>td>span {
     width: 75%;
 }
 .div-btn-right {
-    text-align: right;
+    text-align: center;
     padding: 15px 0px;
 }
 .group-setting {
@@ -138,4 +138,8 @@ tbody>tr>td>span {
     margin-top: -10px;
     margin-bottom: 5px;
     padding: 10px;
+}
+.group-setting>i.fa-spinner {
+    width: 100%;
+    text-align: center;
 }

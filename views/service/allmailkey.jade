@@ -15,6 +15,9 @@ block addcss
 			padding-right: 5px;
 		}
 
+block addjs
+	script(src="js/loader.js")
+
 block addLogin
 block addContent
 	h1= title || "Danh sách key đăng ký"
@@ -22,9 +25,10 @@ block addContent
 		.div-btn-right
 			input(type="text", placeholder="Nội dung tìm kiếm ...")
 			button Tìm kiếm
-			button Cài đặt
-		.group-setting(style="display:none;")
-			p Set chi đây
+			button(data-open="#div-set") Chú thích
+		.group-setting#div-set.hide
+			i.fa.fa-spinner.fa-spin.fa-2x(aria-hidden="true")
+			#myPieChart
 	table.table.table-hover.table-bordered(style="text-align:center;")
 		tr
 			th(style="width:50px") No.
@@ -44,7 +48,7 @@ block addContent
 				td.text-left #{ key.NameUser }
 				td.text-left #{ key.Phone }
 				td.text-left #{ key.Email }
-				td
+				td.change
 					span.glyphicon.glyphicon-off
 					span.glyphicon.glyphicon-time
 					span.glyphicon.glyphicon-trash

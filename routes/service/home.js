@@ -14,7 +14,7 @@ module.exports = (app, pool) => {
 
 	app.get("/service/email", (req, res, next) => {
 		let db = new Db(pool);
-		let sql = "select * from keymail limit 0, 20;"
+		let sql = "select * from keymail order by State desc limit 0, 20;"
 		try {
 			db.getData(sql)
 			.then(results => {
@@ -27,6 +27,43 @@ module.exports = (app, pool) => {
 		} catch (error) {
 			console.log(error);
 			res.redirect("/error");
+		}
+	});
+
+	app.post("/service/changestate", (req, res, next) => {
+		let db = new Db(pool);
+		let sql = "update keymail set State = ?, DateBlock = ? where Id = ?"
+		let obj = []
+		let strState = req.body.new
+		let strId = req.body.key
+		let date = moment(new Date());
+		
+		try {
+			obj = [strState, date.add(1, "M").format("YYYY/MM/DD"), strId];
+			pool.getConnection(function(err, connection) {
+				connection.beginTransaction(function(errTran) {
+					if(errTran) res.json({requets: false, keyvalue: "ErrorValue"});
+					else db.executeQuery(sql, obj, connection)
+					.then(results => {
+						connection.commit(function(errComit) {
+							if(errComit) connection.rollback(function() {
+								res.json({requets: false, keyvalue: "ErrorValue"});
+							})
+							else {
+								res.json({requets: true, keyvalue: date.add(1, "M").format("YYYY/MM/DD")});
+							}
+						});
+					})
+					.catch(error => {
+						connection.rollback(function() {
+							res.json({requets: false, keyvalue: "ErrorValue"});
+						});
+					});
+				});
+			});
+		} catch (error) {
+			console.log(error);
+			res.json({requets: false, keyvalue: "ErrorValue"});
 		}
 	});
 
