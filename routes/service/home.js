@@ -15,10 +15,16 @@ module.exports = (app, pool) => {
 	app.get("/service/email", (req, res, next) => {
 		let db = new Db(pool);
 		let sql = "select * from keymail order by State desc limit 0, 20;"
+		sql += "select State, count(State) as SoLuong from keymail group by State order by State desc;"
+		sql += "select substr(DateBlock, 1, 7) as MonthRegit, count(DateBlock) as Number from keymail group by MonthRegit;"
 		try {
 			db.getData(sql)
 			.then(results => {
-				res.render("service/allmailkey", {data: results});
+				let dataChart = {
+					data1: results[1],
+					data2: results[2]
+				}
+				res.render("service/allmailkey", {data: results[0], dataChart: dataChart});
 			})
 			.catch(err => {
 				console.log(err);
@@ -33,7 +39,7 @@ module.exports = (app, pool) => {
 	app.get("/service/searchemail", (req, res, next) => {
 		let db = new Db(pool);
 		let sql = "select * from keymail where MacKey = ? or NameUser like N? or Phone like ? order by State desc limit ?, 20;"
-		let intPage = parseInt(req.query.page, 1)
+		let intPage = parseInt(req.query.page)
 		let textSearch = req.query.key
 		try {
 			if(textSearch == undefined) textSearch = "";
@@ -94,10 +100,26 @@ module.exports = (app, pool) => {
 		try {
 			db.getData(sql, req.params.key)
 			.then(results => {
-				if(results.length > 0)
-					res.json({requets: true, keyvalue: results[0].MacKey});
-				else
-					res.json({requets: false, keyvalue: "ErrorValue"});
+				if(results.length > 0) {
+					let state = results[0].State;
+					switch(state) {
+						case -2, -1:
+							res.json({requets: false, keyvalue: "ErrorValue"});
+							break;
+						case 0: case 1: case 5:
+							res.json({requets: true, keyvalue: results[0].MacKey});
+							break;
+						case 2: case 3:
+							let date = moment(new Date());
+							let datablock = moment(results[0].DateBlock);
+							if(datablock.diff(date, 'days') > -1){
+								res.json({requets: true, keyvalue: results[0].MacKey});
+							} else res.json({requets: false, keyvalue: "ErrorValue"});
+							break;
+						default:
+							res.json({requets: false, keyvalue: "ErrorValue"});
+					}
+				} else res.json({requets: false, keyvalue: "ErrorValue"});
 			})
 			.catch(err => {
 				console.log(err);

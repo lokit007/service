@@ -1,6 +1,18 @@
 .div-clear {
     clear: both;
 }
+li.next, li.previous {
+    cursor: pointer;
+}
+div#waiting {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    height: 100%;
+    background-color: lightgray;
+    opacity: 0.70;
+    padding: 20%;
+}
 div#div-content {
     position: fixed;
     width: 100%;

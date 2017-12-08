@@ -3,11 +3,19 @@ function onLoadData(url, method, data, cb) {
         type: method,
         url: url,
         data: data,
+        beforeSend: function(){
+            $('#waiting').removeClass('hide')
+            $('#waiting').addClass('show')
+        },
         error(err) {
             return cb(err, {req: false, data: null})
         },
         success: function(results) {
             return cb(null, {req: true, data: results})
+        },
+        complete: function(){
+            $('#waiting').removeClass('show')
+            $('#waiting').addClass('hide')
         }
     });
 }
@@ -39,13 +47,15 @@ var page = 1
 function searchKeyMail(first) {
     var search = $("#txtSearch").val();
     if(first) page = 1
+    if(page == 1) $('.previous').addClass('disabled')
+    else  $('.previous').removeClass('disabled')
     onLoadData("/service/searchemail", "get", {key:search, page:page}, function(err, result) {
         if(err) eModal.alert("Không thể tìm kiếm dữ liệu bạn cần!", "Không tìm thấy dữ liệu!");
         else if(result.req) {
             if(result.data.req) {
-                $(".rowdata").remove();
+                if(first) $(".rowdata").remove();
                 result.data.data.forEach(element => {
-                    this.rowdata = $('<tr class="rowdata"></tr>');
+                    this.rowdata = $('<tr class="rowdata page'+page+'"></tr>');
                     $('<td>'+element.Id+'</td>').appendTo(this.rowdata);
                     $('<td class="text-left">'+element.MacKey+'</td>').appendTo(this.rowdata);
                     $('<td>'+element.State+'</td>').appendTo(this.rowdata);
@@ -58,11 +68,54 @@ function searchKeyMail(first) {
                 });
                 var objSpanChange = $('td.change span.glyphicon');
                 objSpanChange.on('click', eventSpan)
+                if($('.page'+page).length < 20) $('.next').addClass('disabled')
             } else eModal.alert("Không thể tìm kiếm dữ liệu bạn cần!", "Không tìm thấy dữ liệu!");
         } else eModal.alert("Không thể tìm kiếm dữ liệu bạn cần!", "Không tìm thấy dữ liệu!");
     });
 }
+function getStateString(state) {
+    switch(state) {
+        case -2: return "-2 : Khóa vĩnh viễn";
+        case -1: return "-1 : Khóa tạm thời";
+        case 0: return "0 : Dùng cho 5 máy";
+        case 1: return "1 : Dùng cho 5 máy vô thời hạn";
+        case 2: return "2 : Đăng ký dùng";
+        case 3: return "3 : Dùng thử";
+        case 5: return "5 : Active vô thời hạn";
+        default: return "Trạng thái khác";
+    }
+}
+function drawPieChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Trạng Thái');
+    data.addColumn('number', 'Phần Trăm');
+    chartData.data1.forEach(function(element) {
+        data.addRow([getStateString(element.State), element.SoLuong]);
+    })
+    var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
+    var options = {
+        title: 'Thống kê trạng thái người dùng'
+    };
+    chart.draw(data, options);
+}
+function drawColunmChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Tháng');
+    data.addColumn('number', 'Số lượng');
+    chartData.data2.forEach(function(element) {
+        data.addRow([element.MonthRegit, element.Number]);
+    })
+    var chart = new google.visualization.ColumnChart(document.getElementById('myColumnChart'));
+    var options = {
+        title: 'Thống kê người dùng phầm mềm'
+    };
+    chart.draw(data, options);
+}
 $(document).ready(function () {
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawPieChart);
+    google.charts.setOnLoadCallback(drawColunmChart);
+
     $('.show-menu').click(function (e) {
         var obj = $(this).children('ul.sub-menu');
         if (obj.hasClass("view")) obj.removeClass("view");
@@ -81,18 +134,30 @@ $(document).ready(function () {
     })
     var objSpanChange = $('td.change span.glyphicon');
     objSpanChange.on('click', eventSpan)
-    google.charts.load('current', { packages: ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Element');
-        data.addColumn('number', 'Percentage');
-        data.addRows([
-            ['Nitrogen', 0.78],
-            ['Oxygen', 0.21],
-            ['Other', 0.01]
-        ]);
-        var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
-        chart.draw(data, null);
-    }
+    var objPrevious = $('.previous');
+    var objNext = $('.next');
+    objPrevious.on('click', function(){
+        if(page != 1) {
+            var data = $('.page' + page)
+            if(data.length < 20) objNext.removeClass('disabled')
+            data.addClass('hide');
+            page -= 1
+            $('.page' + page).removeClass('hide');
+            if(page == 1) objPrevious.addClass('disabled')
+        }
+    })
+    objNext.on('click', function(){
+        if(objNext.hasClass('disabled') == false) {
+            objPrevious.removeClass('disabled')
+            $('.page' + page).addClass('hide');
+            page += 1
+            var data = $('.page' + page)
+            if(data.length > 0) {
+                if(data.length < 20) objNext.addClass('disabled')
+                $('.page' + page).removeClass('hide');
+            } else {
+                searchKeyMail(false)
+            }
+        }
+    })
 });

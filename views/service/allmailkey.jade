@@ -14,8 +14,16 @@ block addcss
 			padding-left: 5px;
 			padding-right: 5px;
 		}
+		#myPieChart, #myColumnChart {
+			float: left;
+			min-width: 300px;
+			height: 200px;
+		}
 
 block addjs
+	script(type='text/javascript').
+		//- Khai báo biến môi trường chứa dữ liệu
+		var chartData = JSON.parse('!{JSON.stringify(dataChart)}');
 	script(src="js/loader.js")
 
 block addLogin
@@ -27,8 +35,9 @@ block addContent
 			button(onClick="searchKeyMail(true)") Tìm kiếm
 			button(data-open="#div-set") Chú thích
 		.group-setting#div-set.hide
-			i.fa.fa-spinner.fa-spin.fa-2x(aria-hidden="true")
 			#myPieChart
+			#myColumnChart
+			.div-clear
 	table.table.table-hover.table-bordered(style="text-align:center;")
 		tr
 			th(style="width:50px") No.
@@ -40,7 +49,7 @@ block addContent
 			th Email
 			th Action
 		- each key in data
-			tr.rowdata(class="row#{ key.State }")
+			tr.rowdata.page1(class="row#{ key.State }")
 				td #{ key.Id }
 				td.text-left #{ key.MacKey }
 				td #{ key.State }
@@ -52,7 +61,8 @@ block addContent
 					span.glyphicon.glyphicon-off
 					span.glyphicon.glyphicon-time
 					span.glyphicon.glyphicon-trash
+	- var data1 = data1
 	ul.pager
-			li.previous: a(href="#") &larr; Older
-			li.next: a(href="#") Newer &rarr;
+			li.previous.disabled: a &larr; Older
+			li.next(class="#{ data.length<20?'disabled':''}"): a Newer &rarr;
 		
