@@ -195,7 +195,7 @@ $(document).ready(function () {
     });
     objAdd.on('click', function(e){
         var options = {
-            url: "http://localhost:3000/service/add",
+            url: "service/add",
             title:'Thêm ứng dụng',
             size: eModal.size.sm,
             buttons: [
