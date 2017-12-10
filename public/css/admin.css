@@ -38,13 +38,21 @@ div#div-right>h1 {
     color: #d82a2a;
 }
 /* Menu style */
+ul.nav-stacked>li>a {
+    font-size: 1.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
 .nav>li>a>i, .nav>li>ul>li>a>i {
-    width: 25px;
+    width: 50px;
     text-align: center;
+}
+ul.sub-menu>li {
+    padding: 10px 0px;
 }
 .nav>li>a>span.caret {
     float: right;
-    margin-top: 8px;
+    margin-top: 15px;
 }
 .nav>li>ul li:hover {
     background-color: lightgray;
@@ -57,6 +65,12 @@ li.show-menu {
 }
 ul.sub-menu {
     display: none;
+    list-style: lower-armenian;
+    padding: 0px 0px 0px 50px;
+}
+ul.sub-menu>li>a {
+    text-transform: capitalize;
+    font-weight: 600;
 }
 .view {
 	display: inherit !important;

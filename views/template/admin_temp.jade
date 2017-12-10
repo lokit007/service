@@ -5,8 +5,8 @@ html(lang="#{ clanguage }")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
         title= title || "Admin NhanViet Webservice"
-        //- base(href="https://service-nhanviet.herokuapp.com")
-        base(href="http://localhost:3000")
+        base(href="https://service-nhanviet.herokuapp.com")
+        //- base(href="http://localhost:3000")
         link(href="css/bootstrap.min.css", rel="stylesheet")
         link(href="css/admin.css", rel="stylesheet")
         link(href="font-awesome/css/font-awesome.min.css", rel="stylesheet")
@@ -59,33 +59,29 @@ html(lang="#{ clanguage }")
                                 i.fa.fa-shopping-basket
                 block addMenu
                     ul.nav.nav-pills.nav-stacked
-                        li: a(href="#")
-                            i.fa.fa-shopping-basket
-                            | Menu 1
-                        li: a(href="#")
-                            i.fa.fa-shopping-basket
-                            | Menu 1
-                        li: a(href="#")
-                            i.fa.fa-shopping-basket
-                            | Menu 1
+                        li: a(href="/admin")
+                            i.fa.fa-home.fa-2x
+                            | Trang chủ
+                        li: a(href="/admin/category")
+                            i.fa.fa-calendar-plus-o.fa-2x
+                            | Danh mục
+                        li: a(href="/service/update")
+                            i.fa.fa-pencil-square-o.fa-2x
+                            | Cập nhật
                         li.show-menu
                             a
-                                i.fa.fa-shopping-basket
-                                |  Cửa hàng
+                                i.fa.fa-apple.fa-2x
+                                |  Ứng dụng
                                 span.caret
                             ul.sub-menu
-                                li: a(href="#")
-                                    i.fa.fa-shopping-basket
-                                    |  Cửa hàng
-                                li: a(href="#")
-                                    i.fa.fa-share-alt-square
-                                    |  Đăng bài
-                        li: a(href="#")
-                            i.fa.fa-shopping-basket
-                            | Menu 1
-                        li: a(href="#")
-                            i.fa.fa-shopping-basket
-                            | Menu 1
+                                li: a(href="/service/email")  Send Mail Marketing
+                                li: a English Study
+                        li: a(href="/admin")
+                            i.fa.fa-bell-o.fa-2x
+                            | Thông báo
+                        li: a(href="/admin")
+                            i.fa.fa-bar-chart.fa-2x
+                            | Thông kê hệ thống
             #div-right
                 block addLogin
                     p Noi dung chinh hien thi

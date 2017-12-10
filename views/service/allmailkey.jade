@@ -25,6 +25,12 @@ block addjs
 		//- Khai báo biến môi trường chứa dữ liệu
 		var chartData = JSON.parse('!{JSON.stringify(dataChart)}');
 	script(src="js/loader.js")
+	script(type='text/javascript').
+		$(document).ready(function () {
+			google.charts.load('current', { packages: ['corechart'] });
+			google.charts.setOnLoadCallback(drawPieChart);
+			google.charts.setOnLoadCallback(drawColunmChart);
+		})
 
 block addLogin
 block addContent

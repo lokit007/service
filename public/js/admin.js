@@ -112,10 +112,6 @@ function drawColunmChart() {
     chart.draw(data, options);
 }
 $(document).ready(function () {
-    google.charts.load('current', { packages: ['corechart'] });
-    google.charts.setOnLoadCallback(drawPieChart);
-    google.charts.setOnLoadCallback(drawColunmChart);
-
     $('.show-menu').click(function (e) {
         var obj = $(this).children('ul.sub-menu');
         if (obj.hasClass("view")) obj.removeClass("view");
