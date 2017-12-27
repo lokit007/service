@@ -1,0 +1,61 @@
+extends ../template/admin_temp
+
+block addcss
+	style.
+		.after-title > i {
+			padding: 0px 5px 0px 0px;
+		}
+		.after-title {
+			float: right;
+			margin-top: -30px;
+			margin-right: 1%;
+		}
+block addjs
+	script(type='text/javascript').
+		$(document).ready(function() {
+			$("#add").click(function(){
+				var options = {
+					message: "Tên danh mục",
+					title: 'Thêm danh mục mới',
+					size: eModal.size.sm
+				};
+				eModal.prompt(options)
+				.then(function(e){
+					alert("Xem" + e)
+				})
+			});
+		});
+		
+block addLogin
+block addContent
+	h1= title || "Danh sách key đăng ký"
+	button#add.btn.btn-success.btn-xs.after-title
+		i.fa.fa-plus
+		| Add new
+	.div-setting
+		.div-btn-right
+			input#txtSearch(type="text", placeholder="Nội dung tìm kiếm ...")
+			button(onClick="searchKeyMail(true)") Tìm kiếm
+			button(data-open="#div-set") Chú thích
+		.group-setting#div-set.hide
+			#myPieChart
+			#myColumnChart
+			.div-clear
+	table.table.table-hover.table-bordered(style="text-align:center;")
+		tr
+			th(style="width:50px") No.
+			th Title
+			th(style="width:50px") Status
+			th Action
+		- each key in data
+			tr.rowdata.page1(class="row#{ key.State }")
+				td #{ key.Id }
+				td.text-left #{ key.Email }
+				td.change
+					span.glyphicon.glyphicon-off
+					span.glyphicon.glyphicon-time
+					span.glyphicon.glyphicon-trash
+	ul.pager
+			li.previous.disabled: a &larr; Older
+			li.next(class="#{ data.length<20?'disabled':''}"): a Newer &rarr;
+		
